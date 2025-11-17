@@ -3,7 +3,10 @@
 A futuristic, visually immersive, 3D-powered developer portfolio built with React, Vite, Tailwind CSS, React Three Fiber, and Framer Motion.
 Designed with a dreamy dark aesthetic using lavender and soft pink highlights.
 
-<p align="center"> <img src="./client/public/favicon.png" alt="Portfolio Logo" width="200" /> </p>
+<p align="center"> <img src="./public/favicon.png" alt="Portfolio Logo" width="200" /> </p>
+
+## 🌐 Live Site: [3D_Dreamy_Portfolio](https://3d-dreamy-portfolio.netlify.app/)
+
 
 ---
 
