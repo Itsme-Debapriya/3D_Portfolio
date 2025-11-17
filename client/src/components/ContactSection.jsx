@@ -30,34 +30,30 @@ export default function ContactSection() {
 			message: formData.message,
 		};
 
-		emailjs
-			.send(
-				"service_oudxk7s",
-				"template_dfn4asm",
-				templateParams,
-				"o2wGD6gnkFu8eQ2Ol"
-			)
-			.then(
-				(result) => {
-					console.log("Email sent:", result.text);
+		const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+		const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+		const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+		
+		emailjs.send(serviceID, templateID, templateParams, publicKey).then(
+			(result) => {
+				console.log("Email sent:", result.text);
 
-					toast({
-						title: "Message Sent Successfully!",
-						description:
-							"Thank you for reaching out. I'll reply soon.",
-					});
+				toast({
+					title: "Message Sent Successfully!",
+					description: "Thank you for reaching out. I'll reply soon.",
+				});
 
-					setFormData({ name: "", email: "", message: "" });
-				},
-				(error) => {
-					console.error("Email error:", error.text);
-					toast({
-						title: "Failed to send message!",
-						description: "Please try again later.",
-						variant: "destructive",
-					});
-				}
-			);
+				setFormData({ name: "", email: "", message: "" });
+			},
+			(error) => {
+				console.error("Email error:", error.text);
+				toast({
+					title: "Failed to send message!",
+					description: "Please try again later.",
+					variant: "destructive",
+				});
+			}
+		);
 	};
 
 	const handleChange = (e) => {
