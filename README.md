@@ -55,8 +55,7 @@ npm run dev
 
 ### Setup Environment Variables
 
-Create .env in the client folder -->
-/client/.env
+Create .env file
 
 ```
 VITE_EMAILJS_SERVICE_ID=Your EMAILJS_SERVICE_ID
