@@ -53,6 +53,18 @@ npm install
 npm run dev
 ```
 
+### Setup Environment Variables
+
+Create .env in the client folder -->
+/client/.env
+
+```
+VITE_EMAILJS_SERVICE_ID=Your EMAILJS_SERVICE_ID
+VITE_EMAILJS_TEMPLATE_ID=Your EMAILJS_TEMPLATE_ID
+VITE_EMAILJS_PUBLIC_KEY=Your EMAILJS_PUBLIC_KEY
+
+```
+
 ## License
 
 This project is open source and available for educational purposes.
