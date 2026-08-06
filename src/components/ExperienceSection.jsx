@@ -1,10 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Briefcase, Sparkles } from "lucide-react";
+import { Briefcase, Sparkles, ExternalLink } from "lucide-react";
 
 const experiences = [
   {
-    role: "IBM Internship Emerging Technologies (AI & Cloud)",
+    role: "AI & Cloud Intern",
     company: "Edunet Foundation (IBM).",
     duration: "July 2024 - August 2024",
     achievements: [
@@ -13,6 +13,15 @@ const experiences = [
       "Model Building (Algorithm Explanation) Auto AI + Assignment",
       "NLP/GenAI/LLM mode",
     ],
+  },
+  {
+    role: "AI intern",
+    company: "Infosys Springboard.",
+    duration: "15/09/2025 - 25/11/2025",
+    achievements: [
+      "ReviewSense: Extracting Insights from Customer Feedback",
+    ],
+    projectUrl: "https://feedback-analysis-frontend.onrender.com/",
   },
   {
     role: "Data Visualisation (CERTIFICATION)",
@@ -55,27 +64,28 @@ export default function ExperienceSection() {
     <section
       id="experience"
       ref={ref}
-      className="relative py-24 lg:py-32 bg-background overflow-hidden"
+      className="relative py-14 lg:py-20 bg-background overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
 
       {/* Animated vertical line particles */}
-      {[...Array(10)].map((_, i) => (
+      {[...Array(5)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-px h-20 bg-gradient-to-b from-transparent via-primary to-transparent"
+          className="absolute w-px h-20 bg-gradient-to-b from-transparent via-primary to-transparent pointer-events-none"
           style={{
-            left: `${10 + i * 10}%`,
+            left: `${15 + i * 20}%`,
             top: 0,
+            willChange: "transform, opacity",
           }}
           animate={{
             y: ["0%", "100%"],
-            opacity: [0, 1, 0],
+            opacity: [0, 0.8, 0],
           }}
           transition={{
-            duration: 3,
+            duration: 4,
             repeat: Infinity,
-            delay: i * 0.3,
+            delay: i * 0.5,
             ease: "linear",
           }}
         />
@@ -109,7 +119,7 @@ export default function ExperienceSection() {
         <div className="relative">
           {/* Animated timeline */}
           <motion.div
-            className="absolute left-0 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-primary rounded-full"
+            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-primary rounded-full"
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : {}}
             transition={{ duration: 1, ease: "easeOut" }}
@@ -136,7 +146,7 @@ export default function ExperienceSection() {
                 <div
                   className={`flex-1 ${
                     index % 2 === 0 ? "md:text-right" : "md:text-left"
-                  } text-left`}
+                  } text-left w-full pl-10 md:pl-0`}
                 >
                   <motion.div
                     className="inline-block p-6 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 w-full relative overflow-hidden group"
@@ -204,16 +214,26 @@ export default function ExperienceSection() {
                             transition={{ delay: index * 0.2 + i * 0.1 }}
                           >
                             <Sparkles className="w-3 h-3 text-primary mt-1 flex-shrink-0 drop-shadow-[0_0_5px_hsl(var(--primary))]" />
-                            <span
-                              className={`${
-                                index === 0 ? "text-right w-full" : ""
-                              }`}
-                            >
+                            <span className="w-full">
                               {achievement}
                             </span>
                           </motion.li>
                         ))}
                       </ul>
+
+                      {exp.projectUrl && (
+                        <div className="pt-2 flex items-center gap-2">
+                          <a
+                            href={exp.projectUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition-all duration-300 hover:scale-105"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            View Live Project
+                          </a>
+                        </div>
+                      )}
                     </div>
 
                     {/* Corner accents */}
@@ -256,49 +276,21 @@ export default function ExperienceSection() {
 
                 {/* 3D animated timeline dot */}
                 <motion.div
-                  className="absolute left-0 md:left-1/2 -translate-x-1/2 z-10"
+                  className="absolute left-4 md:left-1/2 -translate-x-1/2 z-10 top-[34px]"
                   initial={{ scale: 0 }}
                   animate={isInView ? { scale: 1 } : {}}
                   transition={{ duration: 0.4, delay: index * 0.2 + 0.3 }}
-                  style={{ transformStyle: "preserve-3d" }}
                 >
-                  <motion.div
-                    className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary border-4 border-background relative"
-                    animate={{
-                      scale: hoveredIndex === index ? [1, 1.3, 1] : 1,
-                      boxShadow:
-                        hoveredIndex === index
-                          ? [
-                              "0 0 20px hsl(var(--primary) / 0.6)",
-                              "0 0 40px hsl(var(--secondary) / 0.8)",
-                              "0 0 20px hsl(var(--primary) / 0.6)",
-                            ]
-                          : "0 0 10px hsl(var(--primary) / 0.4)",
-                    }}
-                    transition={{
-                      scale: { duration: 1, repeat: Infinity },
-                      boxShadow: { duration: 2, repeat: Infinity },
-                    }}
-                    whileHover={{
-                      rotateY: 360,
-                      transition: { duration: 0.6 },
-                    }}
-                  >
-                    {/* Pulsing ring */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full bg-primary/50"
-                      animate={{
-                        scale: [1, 2, 2],
-                        opacity: [0.5, 0, 0],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeOut",
-                        delay: index * 0.5,
-                      }}
-                    />
-                  </motion.div>
+                  <div className="relative flex items-center justify-center">
+                    {/* Pulsing ring outer */}
+                    <div className="absolute w-8 h-8 rounded-full bg-primary/20 animate-pulse border border-primary/30" />
+                    {/* Main orb core */}
+                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-secondary border-2 border-background shadow-[0_0_15px_rgba(168,85,247,0.7)] flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full bg-background flex items-center justify-center">
+                        <div className="w-1 h-1 rounded-full bg-white" />
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
 
                 <div className="flex-1 hidden md:block" />

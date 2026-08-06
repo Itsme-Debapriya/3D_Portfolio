@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth scroll behavior & hide vertical scrollbar globally while preserving scrolling */
+html {
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 /* LIGHT MODE */
 :root {
   --button-outline: rgba(0,0,0, .10);
@@ -9,37 +24,37 @@
   --opaque-button-border-intensity: -8;
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
-  --background: 0 0% 100%;
-  --foreground: 0 0% 5%;
-  --border: 330 15% 92%;
-  --card: 330 20% 98%;
-  --card-foreground: 0 0% 5%;
-  --card-border: 330 15% 95%;
-  --sidebar: 330 25% 96%;
-  --sidebar-foreground: 0 0% 8%;
-  --sidebar-border: 330 20% 93%;
+  --background: 280 12% 90%;  /* Smoky slate-lavender off-white, completely eliminates sudden flashbang glare */
+  --foreground: 280 20% 12%;  /* Soft dark purple-grey text */
+  --border: 280 10% 82%;
+  --card: 280 12% 94%;        /* Muted light card background for premium elevation contrast */
+  --card-foreground: 280 20% 12%;
+  --card-border: 280 10% 86%;
+  --sidebar: 280 10% 92%;
+  --sidebar-foreground: 280 20% 15%;
+  --sidebar-border: 280 10% 86%;
   --sidebar-primary: 282 30% 64%;
   --sidebar-primary-foreground: 0 0% 98%;
-  --sidebar-accent: 330 30% 91%;
-  --sidebar-accent-foreground: 0 0% 10%;
+  --sidebar-accent: 280 10% 86%;
+  --sidebar-accent-foreground: 280 20% 15%;
   --sidebar-ring: 282 30% 64%;
-  --popover: 330 22% 95%;
-  --popover-foreground: 0 0% 8%;
-  --popover-border: 330 18% 92%;
-  --primary: 282 30% 64%;
+  --popover: 280 10% 92%;
+  --popover-foreground: 280 20% 15%;
+  --popover-border: 280 10% 86%;
+  --primary: 282 55% 48%;     /* Rich purple for excellent contrast on slate-lavender */
   --primary-foreground: 0 0% 98%;
-  --secondary: 350 60% 92%;
-  --secondary-foreground: 0 0% 12%;
-  --muted: 330 18% 93%;
-  --muted-foreground: 0 0% 40%;
-  --accent: 350 60% 92%;
-  --accent-foreground: 0 0% 12%;
+  --secondary: 350 65% 82%;   /* Dusty rose/pink for soft highlights */
+  --secondary-foreground: 280 20% 15%;
+  --muted: 280 10% 85%;
+  --muted-foreground: 280 8% 42%;
+  --accent: 350 65% 82%;
+  --accent-foreground: 280 20% 15%;
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 98%;
-  --input: 330 20% 75%;
-  --ring: 282 30% 64%;
-  --chart-1: 282 30% 64%;
-  --chart-2: 350 60% 92%;
+  --input: 280 10% 80%;
+  --ring: 282 55% 48%;
+  --chart-1: 282 55% 48%;
+  --chart-2: 350 65% 82%;
   --chart-3: 0 0% 25%;
   --chart-4: 282 20% 55%;
   --chart-5: 330 25% 60%;

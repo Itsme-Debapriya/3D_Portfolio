@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "../assets/portfolio_logo.png";
 import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "@/context/ThemeContext";
+
+const logoLight = "/portfolio_logo.png";
+const logoInvert = "/portfolio_logo_invert.png";
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -19,33 +22,51 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const { theme } = useTheme();
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
 
-      const sections = navItems.map((item) => item.href.substring(1));
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
-            break;
+          const sections = navItems.map((item) => item.href.substring(1));
+          for (const section of sections) {
+            const element = document.getElementById(section);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              if (rect.top <= 100 && rect.bottom >= 100) {
+                setActiveSection(section);
+                break;
+              }
+            }
           }
-        }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const smoothScroll = (e, href) => {
     e.preventDefault();
-    const element = document.querySelector(href);
+    if (href === "#home" || href === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setActiveSection("home");
+      setIsOpen(false);
+      return;
+    }
+    const targetId = href.startsWith("#") ? href : `#${href}`;
+    const element = document.querySelector(targetId);
     if (element) {
-      const offset = 80;
+      const offset = 70;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -53,6 +74,7 @@ export default function Navbar() {
         top: offsetPosition,
         behavior: "smooth",
       });
+      setActiveSection(href.replace("#", ""));
       setIsOpen(false);
     }
   };
@@ -62,9 +84,11 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
-    ${scrolled ? "border-b border-primary/20 backdrop-blur-lg" : ""}
-    dark:bg-[#b1b0b061] bg-transparent`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 md:backdrop-blur-lg ${
+          scrolled
+            ? "bg-white/45 dark:bg-transparent md:dark:bg-[#121212]/45 border-b border-black/10 md:dark:border-white/10 shadow-md md:dark:shadow-black/30 max-md:bg-transparent max-md:border-transparent max-md:shadow-none"
+            : "bg-white/20 dark:bg-transparent md:dark:bg-transparent border-b border-transparent shadow-none"
+        }`}
         data-testid="navbar"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,13 +97,19 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+              className="flex items-center h-full"
             >
-              <div className="w-16 h-16 pt-1.5">
-                <a href="/">
-                  <img src={logo} alt="Logo" />
-                </a>
-              </div>
+              <a
+                href="#home"
+                onClick={(e) => smoothScroll(e, "#home")}
+                className="flex items-center h-full py-1"
+              >
+                <img
+                  src={theme === "dark" ? logoInvert : logoLight}
+                  alt="Logo"
+                  className="h-12 w-auto object-contain transition-transform duration-200 hover:scale-105"
+                />
+              </a>
             </motion.div>
 
             <div className="hidden md:flex items-center gap-6">

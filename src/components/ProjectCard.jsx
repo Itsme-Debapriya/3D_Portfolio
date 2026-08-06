@@ -11,18 +11,6 @@ export default function ProjectCard({ title, description, technologies, demoUrl,
   const [isHovered, setIsHovered] = useState(false);
   const ProjectIcon = projectIcons[index % projectIcons.length];
 
-  const handleDemoClick = () => {
-    if (demoUrl) {
-      window.open(demoUrl, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  const handleGithubClick = () => {
-    if (githubUrl) {
-      window.open(githubUrl, '_blank', 'noopener,noreferrer');
-    }
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, rotateX: -15 }}
@@ -137,27 +125,39 @@ export default function ProjectCard({ title, description, technologies, demoUrl,
 
         <CardFooter className="relative flex gap-3">
           {demoUrl && (
-            <Button
-              size="sm"
-              onClick={handleDemoClick}
-              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 border-2 border-primary/40 hover:border-primary hover:shadow-[0_0_30px_hsl(var(--primary)/0.8)] transition-all duration-300 group/btn"
-              data-testid="button-demo"
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1"
             >
-              <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform" />
-              Live Demo
-            </Button>
+              <Button
+                size="sm"
+                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 border-2 border-primary/40 hover:border-primary hover:shadow-[0_0_30px_hsl(var(--primary)/0.8)] transition-all duration-300 group/btn"
+                data-testid="button-demo"
+              >
+                <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform" />
+                Live Demo
+              </Button>
+            </a>
           )}
           {githubUrl && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleGithubClick}
-              className="flex-1 border-2 border-primary/40 hover:border-primary hover:bg-primary/20 hover:shadow-[0_0_30px_hsl(var(--primary)/0.6)] transition-all duration-300 group/btn"
-              data-testid="button-github"
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1"
             >
-              <Github className="w-4 h-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform" />
-              Code
-            </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full border-2 border-primary/40 hover:border-primary hover:bg-primary/20 hover:shadow-[0_0_30px_hsl(var(--primary)/0.6)] transition-all duration-300 group/btn"
+                data-testid="button-github"
+              >
+                <Github className="w-4 h-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform" />
+                Code
+              </Button>
+            </a>
           )}
         </CardFooter>
 

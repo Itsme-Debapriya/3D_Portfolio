@@ -31,9 +31,9 @@ export default function AchievementsSection() {
     <section
       id="achievements"
       ref={ref}
-      className="relative py-24 lg:py-32 bg-muted/30 overflow-hidden"
+      className="relative py-14 lg:py-20 bg-muted/30 overflow-hidden"
     >
-      <FloatingShapes count={10} className="opacity-40" />
+      <FloatingShapes count={4} className="opacity-30" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -60,7 +60,7 @@ export default function AchievementsSection() {
           </p>
         </motion.div>
 
-        <div className="flex gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {achievements.map((achievement, index) => (
             <motion.div
               key={achievement.title}

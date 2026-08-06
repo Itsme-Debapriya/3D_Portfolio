@@ -18,23 +18,30 @@ export default function AboutSection() {
   const rotateY = useTransform(springX, [-300, 300], [-20, 20]);
 
   useEffect(() => {
+    let ticking = false;
     const handleMouseMove = (e) => {
-      const rect = ref.current?.getBoundingClientRect();
-      if (!rect) return;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const rect = ref.current?.getBoundingClientRect();
+          if (rect) {
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
 
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+            mouseX.set(e.clientX - centerX);
+            mouseY.set(e.clientY - centerY);
 
-      mouseX.set(e.clientX - centerX);
-      mouseY.set(e.clientY - centerY);
-
-      setMousePosition({
-        x: (e.clientX - centerX) / rect.width,
-        y: (e.clientY - centerY) / rect.height,
-      });
+            setMousePosition({
+              x: (e.clientX - centerX) / rect.width,
+              y: (e.clientY - centerY) / rect.height,
+            });
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
@@ -88,7 +95,7 @@ export default function AboutSection() {
     <section
       id="about"
       ref={ref}
-      className="relative py-24 lg:py-32 bg-background overflow-hidden"
+      className="relative py-14 lg:py-20 bg-background overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
 

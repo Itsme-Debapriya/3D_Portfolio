@@ -85,9 +85,9 @@ export default function ContactSection() {
 		<section
 			id="contact"
 			ref={ref}
-			className="relative py-24 lg:py-32 bg-background overflow-hidden"
+			className="relative py-14 lg:py-20 bg-background overflow-hidden"
 		>
-			<FloatingShapes count={15} />
+			<FloatingShapes count={5} />
 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<motion.div
@@ -133,7 +133,7 @@ export default function ContactSection() {
 										duration: 0.4,
 										delay: 0.3 + index * 0.1,
 									}}
-									className="relative flex items-start gap-4 p-5 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 overflow-hidden group cursor-pointer"
+									className="relative flex items-start gap-3 xs:gap-4 p-4 xs:p-5 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 overflow-hidden group cursor-pointer w-full min-w-0"
 									whileHover={{
 										x: 8,
 										scale: 1.02,
@@ -236,11 +236,11 @@ export default function ContactSection() {
 									>
 										<info.icon className="w-7 h-7 text-white drop-shadow-lg" />
 									</motion.div>
-									<div className="relative">
+									<div className="relative min-w-0 flex-1">
 										<div className="font-semibold text-foreground group-hover:text-primary group-hover:drop-shadow-[0_0_10px_hsl(var(--primary))] transition-all duration-300">
 											{info.label}
 										</div>
-										<div className="text-sm text-muted-foreground mt-1 group-hover:text-foreground transition-colors">
+										<div className="text-sm text-muted-foreground mt-1 group-hover:text-foreground transition-colors break-all sm:break-normal">
 											{info.value}
 										</div>
 									</div>
@@ -391,7 +391,7 @@ export default function ContactSection() {
 					>
 						<form
 							onSubmit={handleSubmit}
-							className="space-y-6 p-8 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 relative overflow-hidden group"
+							className="space-y-6 p-4 xs:p-6 sm:p-8 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 relative overflow-hidden group"
 						>
 							{/* Animated background gradient */}
 							<motion.div

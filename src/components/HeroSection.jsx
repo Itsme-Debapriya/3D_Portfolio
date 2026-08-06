@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -6,11 +7,23 @@ import {
   Mail,
   Sparkles,
   Code2,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FloatingShapes from "./FloatingShapes";
 
 export default function HeroSection() {
+  const particles = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      xOffset: Math.random() * 40 - 20,
+      duration: 3.5 + Math.random() * 2,
+      delay: i * 0.25,
+    }));
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -50,19 +63,19 @@ export default function HeroSection() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
     >
-      <FloatingShapes count={15} />
+      <FloatingShapes count={6} />
 
       <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
 
       {/* Animated 3D rotating rings */}
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] xs:w-[360px] sm:w-[450px] lg:w-[500px] h-[280px] xs:h-[360px] sm:h-[450px] lg:h-[500px] pointer-events-none"
         style={{ transformStyle: "preserve-3d" }}
       >
         {[0, 1, 2, 3].map((i) => (
           <motion.div
             key={i}
-            className={`absolute inset-0`}
+            className="absolute inset-0"
             animate={{
               rotateZ: 360,
               rotateX: i * 30,
@@ -74,17 +87,17 @@ export default function HeroSection() {
                 ease: "linear",
               },
             }}
-            style={{ transformStyle: "preserve-3d" }}
+            style={{ transformStyle: "preserve-3d", willChange: "transform" }}
           >
             <div
-              className={`w-full h-full rounded-full border-2 opacity-30`}
+              className="w-full h-full rounded-full border-2 opacity-30"
               style={{
                 borderColor:
                   i % 2 === 0 ? "hsl(var(--primary))" : "hsl(var(--secondary))",
                 boxShadow:
                   i % 2 === 0
-                    ? "0 0 30px hsl(var(--primary) / 0.5)"
-                    : "0 0 30px hsl(var(--secondary) / 0.5)",
+                    ? "0 0 20px hsl(var(--primary) / 0.4)"
+                    : "0 0 20px hsl(var(--secondary) / 0.4)",
                 transform: `scale(${1 - i * 0.15})`,
               }}
             />
@@ -93,29 +106,27 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Floating 3D particles */}
-      {[...Array(20)].map((_, i) => (
+      {particles.map((p) => (
         <motion.div
-          key={i}
-          className="absolute w-2 h-2 rounded-full"
+          key={p.id}
+          className="absolute w-2 h-2 rounded-full pointer-events-none"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${p.left}%`,
+            top: `${p.top}%`,
             background:
-              i % 2 === 0 ? "hsl(var(--primary))" : "hsl(var(--secondary))",
-            boxShadow: `0 0 10px ${
-              i % 2 === 0 ? "hsl(var(--primary))" : "hsl(var(--secondary))"
-            }`,
+              p.id % 2 === 0 ? "hsl(var(--primary))" : "hsl(var(--secondary))",
+            willChange: "transform, opacity",
           }}
           animate={{
-            y: [0, -100, 0],
-            x: [0, Math.random() * 50 - 25, 0],
+            y: [0, -80, 0],
+            x: [0, p.xOffset, 0],
             scale: [0, 1, 0],
-            opacity: [0, 1, 0],
+            opacity: [0, 0.8, 0],
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: p.duration,
             repeat: Infinity,
-            delay: i * 0.2,
+            delay: p.delay,
             ease: "easeOut",
           }}
         />
@@ -132,20 +143,31 @@ export default function HeroSection() {
           <motion.div
             className="flex justify-center mb-6"
             animate={{
-              rotateY: [0, 360],
-              scale: [1, 1.1, 1],
+              y: [0, -10, 0],
             }}
             transition={{
-              rotateY: { duration: 4, repeat: Infinity, ease: "linear" },
-              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
             }}
           >
-            <div className="relative">
-              <Code2 className="w-20 h-20 text-primary drop-shadow-[0_0_30px_hsl(var(--primary))]" />
+            <div className="relative p-4 rounded-2xl bg-card/80 backdrop-blur-md border-2 border-primary/30 shadow-[0_0_50px_hsl(var(--primary)/0.3)] group hover:border-primary transition-all duration-300">
               <motion.div
-                className="absolute inset-0"
                 animate={{
-                  rotate: 360,
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+                <Code2 className="w-12 h-12 text-primary drop-shadow-[0_0_15px_hsl(var(--primary))]" />
+              </motion.div>
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 1, 0.5],
                 }}
                 transition={{
                   duration: 3,
@@ -160,7 +182,7 @@ export default function HeroSection() {
 
           <motion.div variants={itemVariants} className="space-y-4">
             <motion.h1
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight"
+              className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight"
               style={{
                 background:
                   "linear-gradient(135deg, hsl(var(--foreground)), hsl(var(--primary)), hsl(var(--secondary)))",
@@ -179,7 +201,7 @@ export default function HeroSection() {
             >
               Hi, I'm DEBAPRIYA DEY.
             </motion.h1>
-            <motion.h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground drop-shadow-[0_0_20px_hsl(var(--primary)/0.3)]">
+            <motion.h2 className="text-xl xs:text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground drop-shadow-[0_0_20px_hsl(var(--primary)/0.3)]">
               I develop modern, scalable web systems.{" "}
             </motion.h2>
           </motion.div>
@@ -231,6 +253,24 @@ export default function HeroSection() {
               >
                 Get In Touch
               </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <a
+                href={import.meta.env.VITE_RESUME_URL || "/resume.pdf"}
+                download="Debapriya_Dey_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-secondary/50 hover:border-secondary hover:bg-secondary/20 hover:shadow-[0_0_40px_hsl(var(--secondary)/0.6)] transition-all duration-300 flex items-center gap-2"
+                  data-testid="button-download-cv"
+                >
+                  <Download className="w-4 h-4" />
+                  Download CV
+                </Button>
+              </a>
             </motion.div>
           </motion.div>
 

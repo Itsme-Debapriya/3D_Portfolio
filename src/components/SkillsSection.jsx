@@ -40,28 +40,29 @@ export default function SkillsSection() {
     <section
       id="skills"
       ref={ref}
-      className="relative py-24 lg:py-32 bg-background overflow-hidden"
+      className="relative py-14 lg:py-20 bg-background overflow-hidden"
     >
-      <FloatingShapes count={12} className="opacity-40" />
+      <FloatingShapes count={5} className="opacity-30" />
 
       {/* Animated background grid */}
-      <div className="absolute inset-0 opacity-10">
-        {[...Array(20)].map((_, i) => (
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        {[...Array(10)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute h-px bg-gradient-to-r from-transparent via-primary to-transparent"
             style={{
-              top: `${(i + 1) * 5}%`,
+              top: `${(i + 1) * 10}%`,
               left: 0,
               right: 0,
+              willChange: "opacity",
             }}
             animate={{
               opacity: [0.1, 0.3, 0.1],
             }}
             transition={{
-              duration: 3,
+              duration: 4,
               repeat: Infinity,
-              delay: i * 0.1,
+              delay: i * 0.2,
             }}
           />
         ))}

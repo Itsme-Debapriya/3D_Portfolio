@@ -63,12 +63,14 @@ export default function Footer() {
             transition={{ duration: 0.6 }}
             className="text-center space-y-4 relative"
           >
-            <div className="flex items-center justify-center gap-2">
-              <Sparkles className="w-6 h-6 text-primary drop-shadow-[0_0_10px_hsl(var(--primary))]" />
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent drop-shadow-[0_0_10px_hsl(var(--primary)/0.3)]">
-                Transforming ideas into digital reality.
-              </h3>
-              <Sparkles className="w-6 h-6 text-secondary drop-shadow-[0_0_10px_hsl(var(--secondary))]" />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-center px-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-primary drop-shadow-[0_0_10px_hsl(var(--primary))]" />
+                <h3 className="text-lg xs:text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent drop-shadow-[0_0_10px_hsl(var(--primary)/0.3)]">
+                  Transforming ideas into digital reality.
+                </h3>
+                <Sparkles className="w-5 h-5 text-secondary drop-shadow-[0_0_10px_hsl(var(--secondary))]" />
+              </div>
             </div>
             <p className="text-muted-foreground">
               Always open to new opportunities and collaborations
@@ -214,7 +216,7 @@ export default function Footer() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-center text-sm text-muted-foreground flex items-center gap-2"
+            className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2 flex-wrap"
           >
             <span>© 2025 Made By DEBAPRIYA DEY</span>
             <Heart className="w-4 h-4 text-primary fill-primary drop-shadow-[0_0_10px_hsl(var(--primary))]" />
