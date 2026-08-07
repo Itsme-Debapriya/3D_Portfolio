@@ -20,13 +20,13 @@ const skillCategories = [
   {
     title: "Backend",
     icon: Database,
-    skills: ["Node.js", "Python", "Express.js", "MongoDB", "Render", "SQLite"],
+    skills: ["Node.js", "Python", "Express.js", "MongoDB", "Render", "MySQL"],
     color: "secondary",
   },
   {
     title: "Tools & Platforms",
     icon: Wrench,
-    skills: ["Git", "GitHub", "Docker", "Vercel", "VSCode", "Postman"],
+    skills: ["Git", "GitHub", "Antigravity IDE", "Vercel", "VSCode", "Postman"],
     color: "primary",
   },
 ];
@@ -114,22 +114,18 @@ export default function SkillsSection() {
               initial={{ opacity: 0, y: 30, rotateX: -20 }}
               animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
               transition={{ duration: 0.6, delay: categoryIndex * 0.2 }}
-              className="relative group perspective-1000"
+              whileHover={{
+                y: -10,
+                scale: 1.02,
+                rotateY: 3,
+              }}
+              className="relative group perspective-1000 h-full cursor-pointer"
               onMouseEnter={() => setHoveredCategory(categoryIndex)}
               onMouseLeave={() => setHoveredCategory(null)}
               data-testid={`category-${category.title.toLowerCase()}`}
               style={{ transformStyle: "preserve-3d" }}
             >
-              <motion.div
-                className="p-8 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 h-full relative overflow-hidden"
-                whileHover={{
-                  y: -10,
-                  scale: 1.02,
-                  rotateY: 3,
-                  borderColor: "hsl(var(--primary))",
-                }}
-                transition={{ duration: 0.3 }}
-              >
+              <div className="p-8 rounded-xl bg-card/80 backdrop-blur-md border-2 border-primary/30 h-full relative overflow-hidden group-hover:border-primary transition-all duration-300">
                 {/* Bright animated gradient on hover */}
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -215,7 +211,7 @@ export default function SkillsSection() {
                         }}
                       />
                     </motion.div>
-                    <h3 className="text-2xl font-bold group-hover:text-primary group-hover:drop-shadow-[0_0_10px_hsl(var(--primary))] transition-all duration-300">
+                    <h3 className="text-2xl font-bold text-foreground/75 group-hover:text-foreground group-hover:scale-[1.02] transition-all duration-300">
                       {category.title}
                     </h3>
                   </div>
@@ -235,7 +231,7 @@ export default function SkillsSection() {
                           y: -3,
                           boxShadow: `0 5px 25px hsl(var(--${category.color}) / 0.6)`,
                         }}
-                        className={`px-3 py-2 rounded-lg bg-${category.color}/10 text-sm font-medium text-center border-2 border-${category.color}/20 hover:border-${category.color} hover:bg-${category.color}/20 transition-all duration-300 cursor-pointer relative overflow-hidden`}
+                        className={`px-3 py-2 rounded-lg bg-${category.color}/10 text-sm font-semibold text-center border-2 border-${category.color}/20 hover:border-${category.color} hover:bg-${category.color}/25 text-foreground/75 hover:text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden`}
                         data-testid={`skill-${skill
                           .toLowerCase()
                           .replace(/\s+/g, "-")}`}
@@ -283,7 +279,7 @@ export default function SkillsSection() {
                       }}
                     />
                   ))}
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>

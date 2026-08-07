@@ -13,6 +13,7 @@ const experiences = [
       "Model Building (Algorithm Explanation) Auto AI + Assignment",
       "NLP/GenAI/LLM mode",
     ],
+    certificateUrl: import.meta.env.VITE_CERTIFICATE_AI_CLOUD || "",
   },
   {
     role: "AI intern",
@@ -22,6 +23,7 @@ const experiences = [
       "ReviewSense: Extracting Insights from Customer Feedback",
     ],
     projectUrl: "https://feedback-analysis-frontend.onrender.com/",
+    certificateUrl: import.meta.env.VITE_CERTIFICATE_AI_INFOSYS || "",
   },
   {
     role: "Data Visualisation (CERTIFICATION)",
@@ -221,17 +223,30 @@ export default function ExperienceSection() {
                         ))}
                       </ul>
 
-                      {exp.projectUrl && (
-                        <div className="pt-2 flex items-center gap-2">
-                          <a
-                            href={exp.projectUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition-all duration-300 hover:scale-105"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            View Live Project
-                          </a>
+                      {(exp.projectUrl || exp.certificateUrl) && (
+                        <div className={`pt-2 flex flex-wrap items-center gap-3 ${index % 2 === 0 ? "md:justify-end" : "md:justify-start"} justify-start`}>
+                          {exp.projectUrl && (
+                            <a
+                              href={exp.projectUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition-all duration-300 hover:scale-105"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              View Live Project
+                            </a>
+                          )}
+                          {exp.certificateUrl && (
+                            <a
+                              href={exp.certificateUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-secondary/10 hover:bg-secondary/20 text-secondary border border-secondary/30 transition-all duration-300 hover:scale-105"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              View Certificate
+                            </a>
+                          )}
                         </div>
                       )}
                     </div>
