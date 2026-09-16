@@ -28,11 +28,12 @@ export default function ContactSection() {
 		const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 		const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 		const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+		const web3AccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
-		if (!serviceID || !templateID || !publicKey) {
+		if (!serviceID && !web3AccessKey) {
 			toast({
 				title: "Configuration Error",
-				description: "Email service keys are missing in .env configuration.",
+				description: "Contact service keys are missing in configuration.",
 				variant: "destructive",
 			});
 			return;
@@ -40,18 +41,41 @@ export default function ContactSection() {
 
 		setIsSubmitting(true);
 
-		const templateParams = {
-			name: formData.name,
-			from_name: formData.name,
-			email: formData.email,
-			from_email: formData.email,
-			reply_to: formData.email,
-			message: formData.message,
-		};
-
 		try {
-			const result = await emailjs.send(serviceID, templateID, templateParams, publicKey);
-			console.log("Email sent successfully:", result.text);
+			if (web3AccessKey) {
+				const response = await fetch("https://api.web3forms.com/submit", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+					},
+					body: JSON.stringify({
+						access_key: web3AccessKey,
+						name: formData.name,
+						email: formData.email,
+						message: formData.message,
+						from_name: formData.name,
+						subject: `New Portfolio Message from ${formData.name}`,
+					}),
+				});
+
+				const data = await response.json();
+
+				if (!data.success) {
+					throw new Error(data.message || "Failed to send message!");
+				}
+			} else {
+				const templateParams = {
+					name: formData.name,
+					from_name: formData.name,
+					email: formData.email,
+					from_email: formData.email,
+					reply_to: formData.email,
+					message: formData.message,
+				};
+
+				await emailjs.send(serviceID, templateID, templateParams, publicKey);
+			}
 
 			toast({
 				title: "Message Sent Successfully!",
@@ -60,7 +84,7 @@ export default function ContactSection() {
 
 			setFormData({ name: "", email: "", message: "" });
 		} catch (error) {
-			console.error("EmailJS Error:", error);
+			console.error("Contact Form Error:", error);
 			const errorText = error?.text || error?.message || "";
 			const isAuthIssue =
 				errorText.includes("Invalid grant") ||
