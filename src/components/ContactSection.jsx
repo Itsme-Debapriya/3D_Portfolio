@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Send, Mail, MapPin, Phone, Sparkles } from "lucide-react";
+import { Send, Mail, MapPin, Phone, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,40 +20,63 @@ export default function ContactSection() {
 		email: "",
 		message: "",
 	});
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		const templateParams = {
-			from_name: formData.name,
-			from_email: formData.email,
-			message: formData.message,
-		};
 
 		const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 		const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 		const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-		
-		emailjs.send(serviceID, templateID, templateParams, publicKey).then(
-			(result) => {
-				console.log("Email sent:", result.text);
 
-				toast({
-					title: "Message Sent Successfully!",
-					description: "Thank you for reaching out. I'll reply soon.",
-				});
+		if (!serviceID || !templateID || !publicKey) {
+			toast({
+				title: "Configuration Error",
+				description: "Email service keys are missing in .env configuration.",
+				variant: "destructive",
+			});
+			return;
+		}
 
-				setFormData({ name: "", email: "", message: "" });
-			},
-			(error) => {
-				console.error("Email error:", error.text);
-				toast({
-					title: "Failed to send message!",
-					description: "Please try again later.",
-					variant: "destructive",
-				});
-			}
-		);
+		setIsSubmitting(true);
+
+		const templateParams = {
+			name: formData.name,
+			from_name: formData.name,
+			email: formData.email,
+			from_email: formData.email,
+			reply_to: formData.email,
+			message: formData.message,
+		};
+
+		try {
+			const result = await emailjs.send(serviceID, templateID, templateParams, publicKey);
+			console.log("Email sent successfully:", result.text);
+
+			toast({
+				title: "Message Sent Successfully!",
+				description: "Thank you for reaching out. I'll reply soon.",
+			});
+
+			setFormData({ name: "", email: "", message: "" });
+		} catch (error) {
+			console.error("EmailJS Error:", error);
+			const errorText = error?.text || error?.message || "";
+			const isAuthIssue =
+				errorText.includes("Invalid grant") ||
+				errorText.includes("reconnect") ||
+				error?.status === 412;
+
+			toast({
+				title: "Failed to send message!",
+				description: isAuthIssue
+					? "Gmail connection expired in EmailJS. Please reconnect your Gmail account in the EmailJS dashboard."
+					: errorText || "Please try again later.",
+				variant: "destructive",
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	const handleChange = (e) => {
@@ -483,13 +506,14 @@ export default function ContactSection() {
 							</div>
 
 							<motion.div
-								whileHover={{ scale: 1.02 }}
-								whileTap={{ scale: 0.98 }}
+								whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+								whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
 							>
 								<Button
 									type="submit"
 									size="lg"
-									className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 border-2 border-primary/50 hover:border-primary hover:shadow-[0_0_40px_hsl(var(--primary)/0.8)] transition-all duration-300 group/btn relative overflow-hidden"
+									disabled={isSubmitting}
+									className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 border-2 border-primary/50 hover:border-primary hover:shadow-[0_0_40px_hsl(var(--primary)/0.8)] transition-all duration-300 group/btn relative overflow-hidden disabled:opacity-75 disabled:cursor-not-allowed"
 									data-testid="button-send"
 								>
 									<motion.div
@@ -507,9 +531,18 @@ export default function ContactSection() {
 											repeat: Infinity,
 										}}
 									/>
-									<span className="relative flex items-center justify-center gap-2">
-										Send Message
-										<Send className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+									<span className="relative flex items-center justify-center gap-2 font-medium">
+										{isSubmitting ? (
+											<>
+												Sending...
+												<Loader2 className="w-4 h-4 animate-spin" />
+											</>
+										) : (
+											<>
+												Send Message
+												<Send className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+											</>
+										)}
 									</span>
 								</Button>
 							</motion.div>
